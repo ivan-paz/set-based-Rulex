@@ -21,15 +21,14 @@ def rules_other_categories(key,dictionary_of_classes):
                 rules_other_classes.append(r)
         else:
             rules_current_class = dictionary_of_classes[key]
-    return [rules_other_classes, rules_current_class]
+    return [rules_current_class, rules_other_classes]
 #-----------------------------------------------------------------------------
 def rulex(Rules, d):
     final_rules = []
     dictionary_of_classes = dictionary_of_categories(Rules)
-    print(dictionary_of_classes)
     for key in dictionary_of_classes:
         [rules_current_class,rules_other_classes] = rules_other_categories(key,dictionary_of_classes)
-        print('key:',key, ';', 'rules other classes : ', rules_other_classes)
+        print('key:', key, ';', 'rules current class', rules_current_class,'rules other classes : ', rules_other_classes)
         print('searching paterns . . . ')
         rules_current_class = search_patterns(rules_current_class,rules_other_classes,d)
         [final_rules.append(r) for r in rules_current_class]
@@ -52,7 +51,7 @@ def setRulex(Rules,d):
     write('MEMORYRules.json',rules)
     return rules
 
-
+#rules = setRulex([[{1},{2},'A'],[{3},{4},'A']],2)
 
 
 

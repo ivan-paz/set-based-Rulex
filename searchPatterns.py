@@ -11,7 +11,7 @@ def similarity(rule1,rule2,d):
         intersection = rule1[i] & rule2[i]
         unions.append(union)
         intersections.append(intersection)
-        if rule1[i] & rule2[i] == set():
+        if rule1[i] & rule2[i] == set(): # OR rule1[i].issubset(rule2[i]): #hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
             difference +=1
             indexes.append(i)
     if difference <= d:
@@ -66,7 +66,9 @@ def create_rule(rule1, unions, intersections, indexes, rules_other_classes, d):
             rule[i] = unions[i]
         else:
             rule[i] = intersections[i]
-    if d >=2:#Here the distance factor is used
+    if d >=2:
+        #for i in range(len(rule1) -1):#hhhhhhhhhhhhhhhhhhhhhhhhhhh
+         #   rule[i] = unions[i]#hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
         contradiction = contradictions(rule,rules_other_classes)
         if contradiction == False:
             return rule
@@ -123,7 +125,7 @@ def search_patterns(rules_current_class, rules_other_classes, d):
     rules_current_class = [x for x in rules_current_class if x != None] 
     print(rules_current_class)
     return rules_current_class
-
+#search_patterns([ [{1},{2},'A'], [{3},{4},'A'] ], [], 2)
 #search_patterns([ [{2},{2,4},'A'], [{4},{2,3},'A'] ], [], 1)
 
 
