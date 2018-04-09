@@ -3,7 +3,7 @@ from setRulex import setRulex
 from writeReadjson import cleanMEMORYRules
 #-----------------------------------------
 
-
+# TEST1
 Rules = [
 [{2},{2},'a'],
 [{2},{4},'a'],
@@ -14,15 +14,9 @@ Rules = [
 ]
 d = 2
 
-
-Rules = [
-[{2},  {2,4},{1},'A'],
-[{2,4},{2,3},{2},'A']
-]
-d = 2
-
+# TEST2
 Rules = [[{2},{2},{1},'a'],[{2},{4},{1},'a'],[{2},{2},{2},'a'],[{2},{3},{2},'a'],[{4},{2},{2},'a'],[{4},{3},{2},'a']]
-
+d = 2
 
 cleanMEMORYRules() 
 print('setRulex algorithm:')
