@@ -1,6 +1,25 @@
 from copy import deepcopy
 import itertools
 #-------------------------------------------------------------
+#def similarity(rule1,rule2,d):
+#    unions = []
+#    intersections = []
+#    indexes = []
+#    difference = 0
+#    for i in range( len(rule1) - 1 ):
+#        union = rule1[i] | rule2[i]
+#        intersection = rule1[i] & rule2[i]
+#        unions.append(union)
+#        intersections.append(intersection)
+#        if intersection == set():#or ( intersection != set() and rule1[i]!=rule2[i] ): #hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
+#            difference +=1
+#            indexes.append(i)
+#    if difference <= d:
+#        return [True, unions, intersections, indexes]
+#    else:
+#        return [False, None, None, None]
+
+# similarity properSet
 def similarity(rule1,rule2,d):
     unions = []
     intersections = []
@@ -11,13 +30,15 @@ def similarity(rule1,rule2,d):
         intersection = rule1[i] & rule2[i]
         unions.append(union)
         intersections.append(intersection)
-        if rule1[i] & rule2[i] == set(): # OR rule1[i].issubset(rule2[i]): #hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
+        if intersection == set() or intersection < rule1[i] or intersection < rule2[i]: #hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
             difference +=1
             indexes.append(i)
+    print('indexes', indexes)
     if difference <= d:
         return [True, unions, intersections, indexes]
     else:
         return [False, None, None, None]
+
 #print( similarity( [{1}, {2}, 'A'], [{2}, {2}, 'A'], 1) )
 #print( similarity([{2}, {2}, 'A'],[{1}, {3}, 'A'],   1))
 #print( similarity([{2}, {2,4}, 'A'],[{4}, {2,3},'A'], 1))
@@ -119,6 +140,7 @@ def search_patterns(rules_current_class, rules_other_classes, d):
                     [pattern, unions, intersections, indexes] = similarity(r1, r2, d)
                     if pattern:
                          rule = create_rule(r1, unions, intersections, indexes, rules_other_classes, d)
+                         print('created rule: ', rule)
                          if rule not in rules_current_class:
                              rules_current_class.append(rule)
             deleteRedundant(rules_current_class)
