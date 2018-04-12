@@ -39,14 +39,14 @@ def setRulex(Rules,d):
     [Rules.append(r) for r in MEMORYRules if r not in Rules]
     print(Rules,d)
     rules = rulex(Rules,d)
-    print(rules)
+    print('first extracted rules : ',rules)
     previousRules = []
     cont = 0
     while rules != previousRules:
         cont +=1
         print('rules != previousRules', cont)
         previousRules = rules
-        rules = rulex(Rules,d)
+        rules = rulex(previousRules,d)
     print('Final set of rules extracted with setRulex: ', rules)
     write('MEMORYRules.json',rules)
     return rules
