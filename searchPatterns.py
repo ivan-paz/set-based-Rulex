@@ -2,25 +2,6 @@ from copy import deepcopy
 import itertools
 #-------------------------------------------------------------
 #    similarity count empty intersections
-#def similarity(rule1,rule2,d):
-#    unions = []
-#    intersections = []
-#    indexes = []
-#    difference = 0
-#    for i in range( len(rule1) - 1 ):
-#        union = rule1[i] | rule2[i]
-#        intersection = rule1[i] & rule2[i]
-#        unions.append(union)
-#        intersections.append(intersection)
-#        if intersection == set():#or ( intersection != set() and rule1[i]!=rule2[i] ): #hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
-#            difference +=1
-#            indexes.append(i)
-#    if difference <= d:
-#        return [True, unions, intersections, indexes]
-#    else:
-#        return [False, None, None, None]
-
-# similarity  non-emptyProperSet
 def similarity(rule1,rule2,d):
     unions = []
     intersections = []
@@ -31,17 +12,39 @@ def similarity(rule1,rule2,d):
         intersection = rule1[i] & rule2[i]
         unions.append(union)
         intersections.append(intersection)
-        if (intersection != set()) and (intersection < rule1[i] or intersection < rule2[i]): #hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
-            print('intersection : ',i, intersection[i])
-        else:
+        if intersection == set():
             difference +=1
             indexes.append(i)
     if difference <= d:
-        print(' difference is less that d',rule1,rule2)
+        #print('difference =',difference,rule1,rule2)
         return [True, unions, intersections, indexes]
     else:
         return [False, None, None, None]
-#print(similarity([{2},{2},'a'],[{4},{3},'a'],1))
+
+# similarity  non-emptyProperSet
+#def similarity(rule1,rule2,d):
+#    unions = []
+#    intersections = []
+#    indexes = []
+#    difference = 0
+#    for i in range( len(rule1) - 1 ):
+#        union = rule1[i] | rule2[i]
+#        intersection = rule1[i] & rule2[i]
+#        unions.append(union)
+#        intersections.append(intersection)
+#        if (intersection != set()) and (intersection < rule1[i] or intersection < rule2[i]): #hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
+#            print('intersection : ', i, intersections[i] )
+#        else:
+#            difference +=1
+#            indexes.append(i)
+#    if difference <= d:
+#        print(' difference is less that d', rule1, rule2 )
+#        return [True, unions, intersections, indexes]
+#    else:
+#        return [False, None, None, None]
+#print(similarity([{2},{2},'a'],[{4},{2,4},'a'],1))
+#print('------------')
+#print(similarity([{2},{2},'a'],[{2},{4},'a'], 1) )
 
 #  similarity properSet
 #def similarity(rule1,rule2,d):
@@ -64,33 +67,33 @@ def similarity(rule1,rule2,d):
 #
 
 #    createRule for non-emptyProperSet
-def create_rule(rule1, unions, intersections, indexes, rules_other_classes, d):
-    flag = False
-    if set() in intersections:
-        flag = True
-
-    rule = deepcopy(rule1)
-
-    if flag == False:
-        for i in range(len(rule1)-1):
-            if i in indexes:
-                rule[i] = unions[i]
-            else:
-                rule[i] = intersections[i]
-    else:
-        for i in range(len(rule1)-1):
-            if i in indexes and intersection[i] !=set():
-                rule[i] = intersections[i]
-            else:
-                rule[i] = unions[i]
-    if d >=2:
-        contradiction = contradictions(rule,rules_other_classes)
-        if contradiction == False:
-            return rule
-        else:
-            return None
-    else:
-        return rule
+#def create_rule(rule1, unions, intersections, indexes, rules_other_classes, d):
+#    flag = False
+#    if set() in intersections:
+#        flag = True
+#
+#    rule = deepcopy(rule1)
+#
+#    if flag == False:
+#        for i in range(len(rule1)-1):
+#            if i in indexes:
+#                rule[i] = unions[i]
+#            else:
+#                rule[i] = intersections[i]
+#    else:
+#        for i in range(len(rule1)-1):
+#            if i in indexes and intersection[i] !=set():
+#                rule[i] = intersections[i]
+#            else:
+#                rule[i] = unions[i]
+#    if d >=2:
+#        contradiction = contradictions(rule,rules_other_classes)
+#        if contradiction == False:
+#            return rule
+#        else:
+#            return None
+#    else:
+#        return rule
 
 #print( similarity( [{1}, {2}, 'A'], [{2}, {2}, 'A'], 1) )
 #print( similarity([{2}, {2}, 'A'],[{1}, {3}, 'A'],   1))
@@ -133,24 +136,24 @@ def contradictions(rule, rules_other_classes):
     return False # No contradiction
 #print(contradictions( [{1,2},{3},'A'], [[{1},{4},'B'], [{4},{8},'C'], [{1},{3},'B']] ))
 
-#    createRules for similarity
-#def create_rule(rule1, unions, intersections, indexes, rules_other_classes, d):
-#    rule = deepcopy(rule1)
-#    for i in range(len(rule1)-1):
-#        if i in indexes:
-#            rule[i] = unions[i]
-#        else:
-#            rule[i] = intersections[i]
-#    if d >=2:
-#        #for i in range(len(rule1) -1):#hhhhhhhhhhhhhhhhhhhhhhhhhhh
-#         #   rule[i] = unions[i]#hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
-#        contradiction = contradictions(rule,rules_other_classes)
-#        if contradiction == False:
-#            return rule
-#        else:
-#            return None
-#    else:
-#        return rule
+#    createRules for similarity "count empty intersections"
+def create_rule(rule1, unions, intersections, indexes, rules_other_classes, d):
+    rule = deepcopy(rule1)
+    for i in range(len(rule1)-1):
+        if i in indexes:
+            rule[i] = unions[i]
+        else:
+            rule[i] = intersections[i]
+    if d >=2:
+        for i in range(len(rule1) -1):      #hhhhhhhhhhhhhhh  if d >= 2 UNIONS EVERYWHERE
+            rule[i] = unions[i]             #hhhhhhhhhhhhhhhhhhhhhh
+        contradiction = contradictions(rule,rules_other_classes)
+        if contradiction == False:
+            return rule
+        else:
+            return None
+    else:
+        return rule
 
 #  True if a rule1 is subset of rule2, False otherwhise
 def contained( rule1, rule2 ):

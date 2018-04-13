@@ -37,9 +37,9 @@ def rulex(Rules, d):
 def setRulex(Rules,d):    
     MEMORYRules = read('MEMORYRules.json')
     [Rules.append(r) for r in MEMORYRules if r not in Rules]
-    print(Rules,d)
+    print('Original rules:',Rules,'difference:',d)
     rules = rulex(Rules,d)
-    print('first extracted rules : ',rules)
+    print('rules in the first extraction:', rules)
     previousRules = []
     cont = 0
     while rules != previousRules:
