@@ -123,17 +123,19 @@ def contradictions(rule, rules_other_classes):
     #for p in presets_other_classes:
     #    rules_other_classes.append(preset_into_rule(p))
     for r in rules_other_classes:
-        r = r[0:-1]
-    expand = expandRule(rule)
-    for r in expand:
-        for R in rules_other_classes:
-            equal = 0
-            for i in range(len(r)):
-                if r[i].issubset(R[i]) == True:
-                    equal +=1
-            if equal == len(r):
-                return True #  There are contradiction
-    return False # No contradiction
+        if r!= None:
+            r = r[0:-1]
+        expand = expandRule(rule)
+        for r in expand:
+            for R in rules_other_classes:
+                equal = 0
+                for i in range(len(r)):
+                    if r[i].issubset(R[i]) == True:
+                        equal +=1
+                if equal == len(r):
+                    return True #  There are contradiction
+    else:
+        return False # No contradiction
 #print(contradictions( [{1,2},{3},'A'], [[{1},{4},'B'], [{4},{8},'C'], [{1},{3},'B']] ))
 
 #    createRules for similarity "count empty intersections"
