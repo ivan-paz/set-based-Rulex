@@ -1,8 +1,6 @@
 from searchPatterns import search_patterns
-from writeReadjson import read
-from writeReadjson import write
 
-def dictionary_of_categories(Rules):
+def createDictionaryOfCategories(Rules):
     dictionary_of_classes = dict()
     for rule in Rules:
         rule_class = rule[-1]
@@ -13,7 +11,7 @@ def dictionary_of_categories(Rules):
             dictionary_of_classes[rule_class].append(rule)
     return dictionary_of_classes
 #-----------------------------------------------------------------------------
-def rules_other_categories(key,dictionary_of_classes):
+def splitRules(key,dictionary_of_classes):
     rules_other_classes = []
     for key1 in dictionary_of_classes:
         if key1 != key:
@@ -23,34 +21,28 @@ def rules_other_categories(key,dictionary_of_classes):
             rules_current_class = dictionary_of_classes[key]
     return [rules_current_class, rules_other_classes]
 #-----------------------------------------------------------------------------
-def rulex(Rules, d):
+def search(Rules, d):
     final_rules = []
-    dictionary_of_classes = dictionary_of_categories(Rules)
-    for key in dictionary_of_classes:
-        [rules_current_class,rules_other_classes] = rules_other_categories(key,dictionary_of_classes)
-        print('key:', key, ';', 'rules current class', rules_current_class,'rules other classes : ', rules_other_classes)
-        print('searching paterns . . . ')
+    dictionary_of_categories = createDictionaryOfCategories(Rules)
+    for key in dictionary_of_categories:
+        [rules_current_class,rules_other_classes] = splitRules(key,dictionary_of_categories)
+        #print('key:', key, ';', 'rules current class', rules_current_class,'rules other classes : ', rules_other_classes)
+        #print('searching paterns . . . ')
         rules_current_class = search_patterns(rules_current_class,rules_other_classes,d)
-        [final_rules.append(r) for r in rules_current_class]
+        [final_rules.append(r) for r in rules_current_class if r not in final_rules]
     return final_rules
 
 def setRulex(Rules,d):    
-    MEMORYRules = read('MEMORYRules.json')
-    [Rules.append(r) for r in MEMORYRules if r not in Rules]
-    print('Original rules:',Rules,'difference:',d)
-    rules = rulex(Rules,d)
+    previousRules = []; cont = 0
+    rules = search(Rules,d)
     print('rules in the first extraction:', rules)
-    previousRules = []
-    cont = 0
     while rules != previousRules:
         cont +=1
         print('rules != previousRules', cont)
         previousRules = rules
-        rules = rulex(previousRules,d)
+        rules = search(previousRules,d)
     print('Final set of rules extracted with setRulex: ', rules)
-    write('MEMORYRules.json',rules)
     return rules
-
 #rules = setRulex([[{1},{2},'A'],[{3},{4},'A']],2)
 
 
