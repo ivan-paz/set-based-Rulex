@@ -37,9 +37,11 @@ def setRulex(Rules,d):
     rules = search(Rules,d)
     print('rules in the first extraction:', rules)
     while rules != previousRules:
+        print(rules,'diferente de ',previousRules)
         cont +=1
         print('rules != previousRules', cont)
         previousRules = rules
+        print('previous Rules :: ',previousRules)
         rules = search(previousRules,d)
     print('Final set of rules extracted with setRulex: ', rules)
     return rules
